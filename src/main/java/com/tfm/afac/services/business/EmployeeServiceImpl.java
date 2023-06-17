@@ -23,6 +23,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         EmployeeEntity employeeEntity = EmployeeMapper.INSTANCIA.employeeDTOToEmployeeEntity(employee);
         employeeEntity.setActivate(true);
         employeeEntity.setIniDate(new Date());
+        System.out.println("fecha ini: " + new Date());
         EmployeeEntity result = employeeRepository.save(employeeEntity);
         EmployeeDto employeeDto = EmployeeMapper.INSTANCIA.employeeEntityToEmployeeDto(result);
         return employeeDto;

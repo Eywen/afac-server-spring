@@ -12,9 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class EmployeeDto implements Serializable {
-
-    private long serialVersionUID = 1;
+public class EmployeeDto  {
 
     private long id;
     private String employeeName;
@@ -26,5 +24,5 @@ public class EmployeeDto implements Serializable {
     private long telephone;
     private Date iniDate;
     private Date finishDate;
-    private Date activate;
+    private boolean activate;
 }

@@ -14,9 +14,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "empleado")
-public class EmployeeEntity implements Serializable {
+public class EmployeeEntity  {
 
-    private long serialVersionUID = 1;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

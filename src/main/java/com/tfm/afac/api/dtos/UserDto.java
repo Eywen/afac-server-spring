@@ -39,6 +39,7 @@ public class UserDto {
     private Role role;
     private Boolean active;
     private LocalDateTime registrationDate;
+    private int id;
 
     public UserDto(User user) {
         BeanUtils.copyProperties(user, this);

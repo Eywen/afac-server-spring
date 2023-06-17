@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 //@ExtendWith(SpringExtension.class)
 
 @ExtendWith(SpringExtension.class)
-//@SpringBootTest
+@SpringBootTest(classes = AfacApplicationTests.class)
 //@TestPropertySource(locations = "classpath:test.properties")
 //@ActiveProfiles("dev")
 class AfacApplicationTests {

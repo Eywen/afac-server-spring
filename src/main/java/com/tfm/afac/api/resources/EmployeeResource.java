@@ -1,11 +1,15 @@
 package com.tfm.afac.api.resources;
 
 import com.tfm.afac.api.dtos.EmployeeDto;
+import com.tfm.afac.data.model.EmployeeEntity;
 import com.tfm.afac.services.business.EmployeeService;
 import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,13 +64,33 @@ public class EmployeeResource {
     }
 
     @SecurityRequirement(name = "basicAuth")
-    @GetMapping
+    @GetMapping("/readall")
     public ResponseEntity<List<EmployeeDto>> findAll (){
         try {
             List<EmployeeDto> EmployeeList = employeeService.readAll();
             return ResponseEntity.status(HttpStatus.OK).body(EmployeeList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+
+    @SecurityRequirement(name = "basicAuth")
+    @GetMapping("/readallpage")
+    public ResponseEntity<Page<EmployeeEntity>> findAllEmployees (
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "order") String order,
+            @RequestParam(defaultValue = "true") boolean asc
+
+    ){
+        try {
+            Page<EmployeeEntity> employeeDtos = employeeService.readAllPageable(PageRequest.of(page,size, Sort.by(order)));
+            if (!asc)
+                employeeDtos = employeeService.readAllPageable(PageRequest.of(page,size, Sort.by(order).descending()));
+
+            return ResponseEntity.status(HttpStatus.OK).body(employeeDtos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 }

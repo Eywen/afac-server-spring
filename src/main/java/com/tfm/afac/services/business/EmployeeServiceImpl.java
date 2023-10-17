@@ -6,6 +6,9 @@ import com.tfm.afac.data.model.EmployeeEntity;
 import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
 import com.tfm.afac.services.mapper.EmployeeMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -70,5 +73,9 @@ public class EmployeeServiceImpl implements EmployeeService{
          return employeeRepository.findAll().stream()
                  .map(employee -> EmployeeMapper.INSTANCIA.employeeEntityToEmployeeDto(employee))
                  .collect(Collectors.toList());
+    }
+
+    public Page<EmployeeEntity> readAllPageable(Pageable pageable) {
+        return employeeRepository.findAll(pageable);
     }
 }

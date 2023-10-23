@@ -38,6 +38,8 @@ public class EmployeeResource {
             return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
         } catch (ForbiddenException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(employeeDto);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
@@ -48,7 +50,7 @@ public class EmployeeResource {
             EmployeeDto createdEmployee = employeeService.update(employeeDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
         } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(employeeDto);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(employeeDto);
         }
     }
 
@@ -59,7 +61,7 @@ public class EmployeeResource {
             EmployeeDto createdEmployee = employeeService.findById(id);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
         } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new EmployeeDto());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new EmployeeDto());
         }
     }
 

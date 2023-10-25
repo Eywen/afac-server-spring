@@ -55,12 +55,14 @@ public class EmployeeResource {
     }
 
     @SecurityRequirement(name = "basicAuth")
-    @GetMapping
-    public ResponseEntity<EmployeeDto> findById (@PathVariable int id){
+    @GetMapping(EMPLOYEE_ID)
+    public ResponseEntity<EmployeeDto> findById (@PathVariable String id){
         try {
-            EmployeeDto createdEmployee = employeeService.findById(id);
+            EmployeeDto createdEmployee = employeeService.findById(Integer.valueOf(id));
             return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
         } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmployeeDto());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new EmployeeDto());
         }
     }

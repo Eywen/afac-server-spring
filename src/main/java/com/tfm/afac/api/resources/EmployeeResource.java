@@ -44,8 +44,8 @@ public class EmployeeResource {
     }
 
     @SecurityRequirement(name = "basicAuth")
-    @PutMapping
-    public ResponseEntity<EmployeeDto> update (@Valid @RequestBody EmployeeDto employeeDto){
+    @PutMapping(EMPLOYEE_ID)
+    public ResponseEntity<EmployeeDto> update (@PathVariable Integer id,@Valid @RequestBody EmployeeDto employeeDto){
         try {
             EmployeeDto createdEmployee = employeeService.update(employeeDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
@@ -56,9 +56,9 @@ public class EmployeeResource {
 
     @SecurityRequirement(name = "basicAuth")
     @GetMapping(EMPLOYEE_ID)
-    public ResponseEntity<EmployeeDto> findById (@PathVariable String id){
+    public ResponseEntity<EmployeeDto> findById (@PathVariable Integer id){
         try {
-            EmployeeDto createdEmployee = employeeService.findById(Integer.valueOf(id));
+            EmployeeDto createdEmployee = employeeService.findById(id);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmployeeDto());

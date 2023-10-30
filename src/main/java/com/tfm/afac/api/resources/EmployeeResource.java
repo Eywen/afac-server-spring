@@ -48,7 +48,7 @@ public class EmployeeResource {
     public ResponseEntity<EmployeeDto> update (@PathVariable Integer id,@Valid @RequestBody EmployeeDto employeeDto){
         try {
             EmployeeDto createdEmployee = employeeService.update(employeeDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
+            return ResponseEntity.status(HttpStatus.OK).body(createdEmployee);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(employeeDto);
         }
@@ -61,7 +61,7 @@ public class EmployeeResource {
             EmployeeDto createdEmployee = employeeService.findById(id);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
         } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmployeeDto());
+            return ResponseEntity.status(HttpStatus.OK).body(new EmployeeDto());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new EmployeeDto());
         }

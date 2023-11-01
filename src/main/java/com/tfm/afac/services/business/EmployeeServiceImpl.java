@@ -9,10 +9,14 @@ import com.tfm.afac.services.mapper.EmployeeMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 
@@ -77,5 +81,16 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     public Page<EmployeeEntity> readAllPageable(Pageable pageable) {
         return employeeRepository.findAll(pageable);
+    }
+    public Page<EmployeeEntity> readAllActive(Pageable pageable, boolean activate) {
+            Specification<EmployeeEntity> spec = (root, query, cb) -> {
+                List<Predicate> predicates = new ArrayList<>();
+                if (activate) {
+                    predicates.add(cb.equal(root.get("activate"), activate));
+                }
+
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+            return employeeRepository.findAll(spec, pageable);
     }
 }

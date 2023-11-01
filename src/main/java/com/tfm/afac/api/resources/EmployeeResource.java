@@ -68,13 +68,31 @@ public class EmployeeResource {
     }
 
     @SecurityRequirement(name = "basicAuth")
-    @GetMapping("/readall")
+    @GetMapping
     public ResponseEntity<List<EmployeeDto>> findAll (){
         try {
             List<EmployeeDto> EmployeeList = employeeService.readAll();
             return ResponseEntity.status(HttpStatus.OK).body(EmployeeList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+    @SecurityRequirement(name = "basicAuth")
+    @GetMapping("/readallactivate")
+    public ResponseEntity<Page<EmployeeEntity>>  findAllActive (
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "order") String order,
+            @RequestParam(defaultValue = "true") boolean asc
+    ){
+        try {
+            Page<EmployeeEntity> employeeDtos = employeeService.readAllActive(PageRequest.of(page,size, Sort.by(order)),true);
+            if (!asc)
+                employeeDtos = employeeService.readAllActive(PageRequest.of(page,size, Sort.by(order).descending()),true);
+
+            return ResponseEntity.status(HttpStatus.OK).body(employeeDtos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 

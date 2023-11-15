@@ -1,7 +1,5 @@
 package com.tfm.afac.services.business;
 
-//import com.tfm.afac.TestConfig;
-
 import com.tfm.afac.TestConfig;
 import com.tfm.afac.api.dtos.EmployeeDto;
 import com.tfm.afac.data.daos.EmployeeRepository;
@@ -9,20 +7,14 @@ import com.tfm.afac.data.model.EmployeeEntity;
 import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
 import com.tfm.afac.services.mapper.EmployeeMapper;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.persistence.criteria.Predicate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,12 +23,9 @@ import static org.mockito.Mockito.*;
 
 
 @TestConfig
-//@RunWith(value= SpringRunner.class)
-//@SpringBootTest
 public class EmployeeServiceTest {
 
-   /* @InjectMocks
-    private EmployeeServiceImpl employeeService;*/
+
     @Autowired
     private EmployeeService employeeService;
 
@@ -47,7 +36,6 @@ public class EmployeeServiceTest {
 
     private EmployeeEntity employee;
 
-//@BeforeEach
     @BeforeEach
     public void onInit() {
         MockitoAnnotations.openMocks(this);
@@ -170,8 +158,6 @@ public class EmployeeServiceTest {
         boolean activate = false;
         Pageable pageable = PageRequest.of(0, 10);
 
-        /*when(employeeRepository.findAll(any(Specification.class), eq(pageable)))
-                .thenReturn(new PageImpl<>(Collections.emptyList(), pageable, 0));*/
         when(employeeRepository.findAll(any(Specification.class), eq(pageable)))
                 .thenReturn(new PageImpl<>(Collections.emptyList(), pageable, 0));
 

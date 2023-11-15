@@ -35,7 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         EmployeeEntity employeeEntity = EmployeeMapper.INSTANCIA.employeeDTOToEmployeeEntity(employee);
         employeeRepository.findByCedula(employee.getCedula())
                     .ifPresent(user -> {
-                                throw new ForbiddenException("El empleado con esta cedula ya existe" +  employee);
+                                throw new ForbiddenException("El empleado con esta cedula ya existe" +  employee.getEmployeeName());
                             });
         employeeEntity.setActivate(true);
         employeeEntity.setIniDate(new Date());

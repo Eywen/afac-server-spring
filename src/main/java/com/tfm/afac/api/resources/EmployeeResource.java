@@ -25,6 +25,7 @@ public class EmployeeResource {
     public static final String EMPLOYEES = "/employees";
     public static final String CREATE = "/create";
     private static final String EMPLOYEE_ID = "/{id}";
+    private static final String DISABLE = "/disable";
 
     @Autowired
     private EmployeeService employeeService;
@@ -51,6 +52,23 @@ public class EmployeeResource {
             return ResponseEntity.status(HttpStatus.OK).body(createdEmployee);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(employeeDto);
+        }
+    }
+
+    @SecurityRequirement(name = "basicAuth")
+    @PutMapping(DISABLE+EMPLOYEE_ID)
+    public ResponseEntity<EmployeeDto> disable (@PathVariable Integer id){
+        try {
+            EmployeeDto employee = employeeService.findById(id);
+            if (null != employee){
+                employee.setActivate(false);
+                EmployeeDto updatedEmployee = employeeService.update(employee);
+                return ResponseEntity.status(HttpStatus.OK).body(updatedEmployee);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmployeeDto());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new EmployeeDto());
         }
     }
 

@@ -20,7 +20,7 @@ public class EmployeeEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     @NonNull
     @NotBlank
     @Column(name = "nombre")

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Entity
-@Table(name = "user") // conflict with user table
+@Table(name = "user_app") // conflict with user table
 public class User {
 
     @Id

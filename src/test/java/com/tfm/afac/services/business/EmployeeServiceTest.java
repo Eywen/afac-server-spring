@@ -10,8 +10,12 @@ import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
 import com.tfm.afac.services.mapper.EmployeeMapper;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
@@ -31,6 +35,8 @@ import static org.mockito.Mockito.*;
 //@SpringBootTest
 public class EmployeeServiceTest {
 
+   /* @InjectMocks
+    private EmployeeServiceImpl employeeService;*/
     @Autowired
     private EmployeeService employeeService;
 
@@ -42,13 +48,14 @@ public class EmployeeServiceTest {
     private EmployeeEntity employee;
 
 //@BeforeEach
-    @Before
+    @BeforeEach
     public void onInit() {
+        MockitoAnnotations.openMocks(this);
 
         employeeDto = EmployeeDto.builder()
                 .id(1).employeeName("empleado1")
                 .lastName1("apellido")
-                .cedula(1111111111)
+                .cedula(00000001)
                 .address("calle")
                 .telephone(11)
                 .iniDate(new Date())
@@ -59,20 +66,23 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void testCreateEmployeeForbidden() {
-        onInit();
+    void testCreateEmployee() {
+
         EmployeeEntity employee = EmployeeMapper.INSTANCIA.employeeDTOToEmployeeEntity(employeeDto);
         when(employeeRepository.findByCedula(anyLong())).thenReturn(Optional.empty());
 
         when(employeeRepository.save(any (EmployeeEntity.class))).thenReturn(employee);
         EmployeeDto result = this.employeeService.create(employeeDto);
 
-        assertNotNull( this.employeeService.create(employeeDto));
+        assertNotNull(result);
+        assertEquals(employeeDto.getCedula(), result.getCedula());
+        verify(employeeRepository, times(1)).findByCedula(anyLong());
+        verify(employeeRepository, times(1)).save(any(EmployeeEntity.class));
     }
 
     @Test
     void createWithForbiddenExceptionTest(){
-        onInit();
+
         when(employeeRepository.findByCedula(anyLong()))
                 .thenThrow(ForbiddenException.class);
         assertThrows(ForbiddenException.class, () -> employeeService.create(employeeDto));
@@ -80,7 +90,6 @@ public class EmployeeServiceTest {
 
     @Test
     void updateEmployeeTest(){
-        onInit();
 
         when(employeeRepository.findById(anyInt()))
                 .thenReturn(Optional.of(employee));
@@ -91,7 +100,6 @@ public class EmployeeServiceTest {
 
     @Test
     void updateWithNotFoundExceptionTest(){
-        onInit();
         when(employeeRepository.findByCedula(anyLong()))
                 .thenThrow(NotFoundException.class);
         when(employeeRepository.findById(anyInt())).thenReturn(Optional.empty());
@@ -99,7 +107,6 @@ public class EmployeeServiceTest {
     }
     @Test
     void findByIdEmployeeTest(){
-        onInit();
         when(employeeRepository.findById(anyInt()))
                 .thenReturn(Optional.of(employee));
 
@@ -108,7 +115,6 @@ public class EmployeeServiceTest {
 
     @Test
     void findByIdWithNotFoundExceptionTest(){
-        onInit();
         when(employeeRepository.findById(anyInt())).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> employeeService.update(employeeDto));
     }
@@ -164,6 +170,8 @@ public class EmployeeServiceTest {
         boolean activate = false;
         Pageable pageable = PageRequest.of(0, 10);
 
+        /*when(employeeRepository.findAll(any(Specification.class), eq(pageable)))
+                .thenReturn(new PageImpl<>(Collections.emptyList(), pageable, 0));*/
         when(employeeRepository.findAll(any(Specification.class), eq(pageable)))
                 .thenReturn(new PageImpl<>(Collections.emptyList(), pageable, 0));
 

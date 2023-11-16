@@ -1,18 +1,18 @@
 package com.tfm.afac.data.model;
 
 public enum CiudadEnum {
-    Buga("Buga"),
-    Bugalagrande("Bugalagrande"),
-    Cali("Cali"),
-    Candelaria("Candelaria"),
-    LaUnion("La Union"),
-    Palmira("Palmira"),
-    PuertoTejada("Puerto Tejada"),
-    Pradera("Pradera"),
-    Roldanillo("Roldanillo"),
-    Santander("Santander"),
-    Sevilla("Sevilla"),
-    Tulua("Tulua");
+    BUGA("Buga"),
+    BUGALAGRANDE("Bugalagrande"),
+    CALI("Cali"),
+    CANDELARIA("Candelaria"),
+    LA_UNION("La Union"),
+    PALMIRA("Palmira"),
+    PUERTO_TEJADA("Puerto Tejada"),
+    PRADERA("Pradera"),
+    ROLDANILLO("Roldanillo"),
+    SANTANDER("Santander"),
+    SEVILLA("Sevilla"),
+    TULUA("Tulua");
 
     private String ciudad;
 

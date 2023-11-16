@@ -29,10 +29,6 @@ public class UserDto {
     @NotNull
     @NotBlank
     private String firstName;
-    /*private String familyName;
-    private String email;
-    private String dni;
-    private String address;*/
     @NotNull
     @NotBlank
     private String password;

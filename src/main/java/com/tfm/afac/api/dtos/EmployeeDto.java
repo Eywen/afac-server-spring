@@ -12,7 +12,9 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class EmployeeDto  {
+public class EmployeeDto implements Serializable {
+
+    private static final long serialVersionUID = -5759634642592245748L;
 
     private int id;
     private String employeeName;

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 
 @TestConfig
-public class EmployeeServiceTest {
+class EmployeeServiceTest {
 
 
     @Autowired
@@ -53,7 +53,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void CreateEmployeeTest() {
+    void CreateEmployeeTest() {
 
         EmployeeEntity employee = EmployeeMapper.INSTANCIA.employeeDTOToEmployeeEntity(employeeDto);
         when(employeeRepository.findByCedula(anyLong())).thenReturn(Optional.empty());
@@ -129,7 +129,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void testReadAllActiveWithActivateTrue() {
+    void testReadAllActiveWithActivateTrue() {
         // Datos de prueba
         boolean activate = true;
         Pageable pageable = PageRequest.of(0, 10);
@@ -152,7 +152,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void testReadAllActiveWithActivateFalse() {
+    void testReadAllActiveWithActivateFalse() {
         boolean activate = false;
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -168,7 +168,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void testReadAllActiveWithDifferentPageable() {
+    void testReadAllActiveWithDifferentPageable() {
         boolean activate = true;
         Pageable pageable = PageRequest.of(1, 5);
         EmployeeEntity employeeEntity = new EmployeeEntity();

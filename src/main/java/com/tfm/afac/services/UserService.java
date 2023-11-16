@@ -31,7 +31,7 @@ public class UserService {
         System.out.println("login email: " +email);
         Optional<User> byEmail = userRepository.findByEmail(email);
 
-        Optional<String> s = byEmail.map(user -> jwtService.createToken(user.getEmail(), user.getFirstName(), user.getRole().name()));
+        //Optional<String> s = byEmail.map(user -> jwtService.createToken(user.getEmail(), user.getFirstName(), user.getRole().name()));
         return this.userRepository.findByEmail(email)
                 .map(user -> jwtService.createToken(user.getEmail(), user.getFirstName(), user.getRole().name()));
     }
@@ -66,13 +66,6 @@ public class UserService {
             throw new ConflictException("The emal already exists: " + email);
         }
     }
-
-    /*public Stream< User > findByMobileAndFirstNameAndFamilyNameAndEmailAndDniContainingNullSafe(
-            String mobile, String firstName, String familyName, String email, String dni, Role roleClaim) {
-        return this.userRepository.findByMobileAndFirstNameAndFamilyNameAndEmailAndDniContainingNullSafe(
-                mobile, firstName, familyName, email, dni, this.authorizedRoles(roleClaim)
-        ).stream();
-    }*/
 
     public User readByMobileAssured(String email) {
         return this.userRepository.findByEmail(email)

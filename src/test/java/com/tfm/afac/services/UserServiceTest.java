@@ -2,7 +2,6 @@ package com.tfm.afac.services;
 
 import com.tfm.afac.TestConfig;
 import com.tfm.afac.data.daos.UserRepository;
-import com.tfm.afac.data.model.EmployeeEntity;
 import com.tfm.afac.data.model.Role;
 import com.tfm.afac.data.model.User;
 import com.tfm.afac.services.exceptions.ForbiddenException;
@@ -10,13 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import com.tfm.afac.services.exceptions.NotFoundException;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -97,6 +95,27 @@ public class UserServiceTest {
 
         userService.createUser(user, Role.ADMIN);
         verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void readByMobileAssured_UserExists_ReturnsUser() {
+
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setRole(Role.CUSTOMER);
+
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
+
+        User result = userService.readByMobileAssured("test@example.com");
+
+        assertEquals(user, result);
+    }
+
+    @Test
+    void readByMobileAssured_UserDoesNotExist_ThrowsNotFoundException() {
+        when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> userService.readByMobileAssured("nonexistent@example.com"));
     }
 
 

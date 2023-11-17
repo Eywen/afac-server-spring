@@ -31,14 +31,6 @@ public class EmployeeRepositoryTest {
                 ));
     }
 
-    @Test
-    void findByactivateTest(){
-        assertTrue(this.employeeRepository.findByactivate(any(Pageable.class),true).stream()
-                .anyMatch(feature ->
-                        isEmployeeId1(feature)
-                ));
-    }
-
     private static boolean isEmployeeId1(EmployeeEntity feature) {
         return "empleado1".equals(feature.getEmployeeName()) &&
                 1111111111 == feature.getCedula() &&

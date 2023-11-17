@@ -77,7 +77,7 @@ public class EmployeeResource {
     public ResponseEntity<EmployeeDto> findById (@PathVariable Integer id){
         try {
             EmployeeDto createdEmployee = employeeService.findById(id);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
+            return ResponseEntity.status(HttpStatus.OK).body(createdEmployee);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.OK).body(new EmployeeDto());
         } catch (Exception e) {

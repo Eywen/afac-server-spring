@@ -38,4 +38,6 @@ public class UserRepositoryTest {
         assertEquals( "user1@prueba.com",listUserByRole.get(0).getEmail());
         assertEquals( "user1",listUserByRole.get(0).getFirstName());
     }
+
+
 }

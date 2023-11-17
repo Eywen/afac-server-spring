@@ -3,9 +3,6 @@ package com.tfm.afac.data.model;
 import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Builder
@@ -15,8 +12,6 @@ import java.util.Date;
 @Entity
 @Table(name = "empleado")
 public class EmployeeEntity  {
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

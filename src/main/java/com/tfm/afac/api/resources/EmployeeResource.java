@@ -32,7 +32,7 @@ public class EmployeeResource {
 
     @SecurityRequirement(name = "basicAuth")
     @PostMapping
-    public ResponseEntity<EmployeeDto> create(@Valid @RequestBody EmployeeDto employeeDto){
+    public ResponseEntity<EmployeeDto> addEmployee(@Valid @RequestBody EmployeeDto employeeDto){
 
         try {
             EmployeeDto createdEmployee = employeeService.create(employeeDto);
@@ -77,7 +77,7 @@ public class EmployeeResource {
     public ResponseEntity<EmployeeDto> findById (@PathVariable Integer id){
         try {
             EmployeeDto createdEmployee = employeeService.findById(id);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
+            return ResponseEntity.status(HttpStatus.OK).body(createdEmployee);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.OK).body(new EmployeeDto());
         } catch (Exception e) {
@@ -89,8 +89,8 @@ public class EmployeeResource {
     @GetMapping
     public ResponseEntity<List<EmployeeDto>> findAll (){
         try {
-            List<EmployeeDto> EmployeeList = employeeService.readAll();
-            return ResponseEntity.status(HttpStatus.OK).body(EmployeeList);
+            List<EmployeeDto> employeeList = employeeService.readAll();
+            return ResponseEntity.status(HttpStatus.OK).body(employeeList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }

@@ -74,7 +74,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public List<EmployeeDto> readAll() {
          return employeeRepository.findAll().stream()
-                 .map(employee -> EmployeeMapper.INSTANCIA.employeeEntityToEmployeeDto(employee))
+                 .map(EmployeeMapper.INSTANCIA::employeeEntityToEmployeeDto)
                  .collect(Collectors.toList());
     }
 

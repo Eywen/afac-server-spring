@@ -9,7 +9,6 @@ import com.tfm.afac.services.exceptions.NotFoundException;
 import com.tfm.afac.services.mapper.EmployeeMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 
 @TestConfig
-public class EmployeeServiceTest {
+class EmployeeServiceTest {
 
 
     @Autowired
@@ -54,7 +53,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void testCreateEmployee() {
+    void CreateEmployeeTest() {
 
         EmployeeEntity employee = EmployeeMapper.INSTANCIA.employeeDTOToEmployeeEntity(employeeDto);
         when(employeeRepository.findByCedula(anyLong())).thenReturn(Optional.empty());
@@ -108,14 +107,13 @@ public class EmployeeServiceTest {
     }
     @Test
     void readAllEmployeeTest(){
-        when(employeeRepository.findAll()).thenReturn(Arrays.asList(employee));
+        when(employeeRepository.findAll()).thenReturn(Collections.singletonList(employee));
         assertNotNull( this.employeeService.readAll());
     }
     @Test
     void readAllPageableEmployeeTest(){
-       Page<EmployeeEntity> page = Mockito.mock(Page.class);
+       Page page = mock(Page.class);
         Pageable pageable = Pageable.unpaged();
-        Page<EmployeeEntity> page1 = Page.empty();
         when(employeeRepository.findAll(any(Pageable.class))).thenReturn(page);
         assertNotNull( this.employeeService.readAllPageable(pageable));
         assertFalse( this.employeeService.readAllPageable(pageable).isEmpty());
@@ -131,7 +129,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void testReadAllActiveWithActivateTrue() {
+    void testReadAllActiveWithActivateTrue() {
         // Datos de prueba
         boolean activate = true;
         Pageable pageable = PageRequest.of(0, 10);
@@ -154,7 +152,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void testReadAllActiveWithActivateFalse() {
+    void testReadAllActiveWithActivateFalse() {
         boolean activate = false;
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -170,7 +168,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void testReadAllActiveWithDifferentPageable() {
+    void testReadAllActiveWithDifferentPageable() {
         boolean activate = true;
         Pageable pageable = PageRequest.of(1, 5);
         EmployeeEntity employeeEntity = new EmployeeEntity();

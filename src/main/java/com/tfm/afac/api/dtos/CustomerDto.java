@@ -23,6 +23,6 @@ public class CustomerDto implements Serializable {
     private long telephone;
     private Date iniDate;
     private Date finishDate;
-    private Date closeMonthDate;
+    private Integer closeMonthDay;
     private boolean activate;
 }

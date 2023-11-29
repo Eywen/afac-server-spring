@@ -31,7 +31,7 @@ public class CustomerEntity {
     @Column(name = "telefono")
     private long telephone;
     @Column(name = "fecha_corte")
-    private Date closeMonthDate;
+    private Integer closeMonthDay;
     @Column(name = "fecha_inicio")
     private Date iniDate;
     @Column(name = "fecha_fin")

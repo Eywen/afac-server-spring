@@ -52,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService{
                             existingCustomer.setAddress(customerEntity.getAddress());
                             existingCustomer.setTelephone(customerEntity.getTelephone());
                             existingCustomer.setActivate(customerEntity.isActivate());
-                            existingCustomer.setCloseMonthDate(customerEntity.getCloseMonthDate());
+                            existingCustomer.setCloseMonthDay(customerEntity.getCloseMonthDay());
                             return existingCustomer;
                         })
                         .map(customerRepository::save)

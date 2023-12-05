@@ -112,24 +112,4 @@ public class CustomerResource {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
-
-    /*@SecurityRequirement(name = "basicAuth")
-    @GetMapping("/readallpage")
-    public ResponseEntity<Page<CustomerEntity>> findAllCustomers (
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "order") String order,
-            @RequestParam(defaultValue = "true") boolean asc
-
-    ){
-        try {
-            Page<CustomerEntity> customerDtos = customerService.readAllPageable(PageRequest.of(page,size, Sort.by(order)));
-            if (!asc)
-                customerDtos = customerService.readAllPageable(PageRequest.of(page,size, Sort.by(order).descending()));
-
-            return ResponseEntity.status(HttpStatus.OK).body(customerDtos);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-    }*/
 }

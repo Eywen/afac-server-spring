@@ -16,4 +16,4 @@ VALUES(3, 111111111, 'empleado1_3', 'apellido1_1', 'apellido2_1', 'calle 1 # 1 -
 
 INSERT INTO cliente
 (id, nombre, direccion, ciudad, telefono, habilitado, fecha_corte, fecha_inicio, fecha_fin)
-VALUES(1, 'cliente1', 'calle 1 # 1-1 ', 'Florida', 1111111111, 1, 25, '2023-11-25', NULL);
+VALUES(1, 'cliente1', 'calle 1 # 1-1', 'Florida', 1111111111, 1, 25, '2023-11-25', NULL);

@@ -7,8 +7,6 @@ import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
@@ -17,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

@@ -21,3 +21,8 @@ VALUES(1, 'cliente1', 'calle 1 # 1-1', 'Florida', 1111111111, 1, 25, '2023-11-25
 INSERT INTO cliente
 (id, nombre, direccion, ciudad, telefono, habilitado, fecha_corte, fecha_inicio, fecha_fin)
 VALUES(2, 'cliente2', 'calle 2 # 2-2', 'Cali', 2222222222, 0, 20, '2023-10-20', NULL);
+
+INSERT INTO guia
+(id_guia, destinatario, direccion, ciudad, telefono, habilitado, estado, fecha_entrada, fecha_entrega, id_cliente, id_empleado)
+VALUES(1, 'destinatario1', 'calle 1 # 1-1', 'Palmira', 1111111111, 1, 'reparto', '2023-11-28', '2023-11-29', 1, 1);
+

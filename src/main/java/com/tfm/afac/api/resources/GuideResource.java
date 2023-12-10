@@ -53,7 +53,7 @@ public class GuideResource {
 
     @SecurityRequirement(name = "basicAuth")
     @PutMapping(ID)
-    public ResponseEntity<GuideDto> update (@PathVariable Integer id,@Valid @RequestBody GuideDto guideDto){
+    public ResponseEntity<GuideDto> update (@PathVariable Long id,@Valid @RequestBody GuideDto guideDto){
         try {
             GuideDto createdGuide = guideService.update(guideDto);
             return ResponseEntity.status(HttpStatus.OK).body(createdGuide);

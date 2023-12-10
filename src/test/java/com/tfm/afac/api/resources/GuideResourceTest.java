@@ -49,8 +49,8 @@ public class GuideResourceTest {
                 .activate(true)
                 .status("reparto")
                 .entryDate(new Date())
-                .idEmployee(2)
-                .idCustomer(2)
+                /*.idEmployee(2)
+                .idCustomer(2)*/
                 .build();
 
         guideDtoList = new ArrayList<>();
@@ -74,10 +74,10 @@ public class GuideResourceTest {
 
         when(guideService.update(any(GuideDto.class))).thenReturn(guideDto);
 
-        Integer employeeId = 1;
+        long guideId = 1;
         when(guideService.update(any(GuideDto.class))).thenReturn(guideDto);
 
-        ResponseEntity<GuideDto> responseEntity = guideResource.update(employeeId, guideDto);
+        ResponseEntity<GuideDto> responseEntity = guideResource.update(guideId, guideDto);
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -199,10 +199,10 @@ public class GuideResourceTest {
     @Test
     void updateNotFoundExceptionTest() {
 
-        Integer employeeId = 1;
+        long guideId = 1;
         when(guideService.update(any(GuideDto.class))).thenThrow(NotFoundException.class);
 
-        ResponseEntity<GuideDto> responseEntity = guideResource.update(employeeId, guideDto);
+        ResponseEntity<GuideDto> responseEntity = guideResource.update(guideId, guideDto);
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());

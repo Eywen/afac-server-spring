@@ -5,6 +5,8 @@ import com.tfm.afac.data.daos.GuideRepository;
 import com.tfm.afac.data.model.GuideEntity;
 import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
+import com.tfm.afac.services.mapper.CustomerMapper;
+import com.tfm.afac.services.mapper.EmployeeMapper;
 import com.tfm.afac.services.mapper.GuideMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,12 +42,15 @@ public class GuideServiceImpl implements GuideService{
                             existingGuide.setEntryDate(guideDto.getEntryDate());
                             existingGuide.setDeliveryDate(guideDto.getDeliveryDate());
                             existingGuide.setRecipient(guideDto.getRecipient());
-                            existingGuide.setCustomerId(guideDto.getIdCustomer());
-                            existingGuide.setEmployeeId(guideDto.getIdEmployee());
+                            /*existingGuide.setCustomerId(guideDto.getIdCustomer());
+                            existingGuide.setEmployeeId(guideDto.getIdEmployee());*/
                             existingGuide.setStatus(guideDto.getStatus());
                             existingGuide.setCity(guideDto.getCity());
                             existingGuide.setAddress(guideDto.getAddress());
                             existingGuide.setTelephone(guideDto.getTelephone());
+                            existingGuide.setActivate(guideDto.isActivate());
+                            existingGuide.setEmployee(EmployeeMapper.INSTANCIA.employeeDTOToEmployeeEntity(guideDto.getEmployee()));
+                            existingGuide.setCustomer(CustomerMapper.INSTANCIA.customerDTOToCustomerEntity(guideDto.getCustomer()));
                             existingGuide.setActivate(guideDto.isActivate());
                             return existingGuide;
                         })

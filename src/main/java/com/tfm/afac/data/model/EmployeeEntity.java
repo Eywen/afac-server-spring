@@ -45,7 +45,7 @@ public class EmployeeEntity  {
     @Column(name = "habilitado")
     private boolean activate;
 
-    @OneToMany
+    /*@OneToMany
     @JoinColumn(name = "id_empleado")
-    private List<GuideEntity> guidesList;
+    private List<GuideEntity> guidesList;*/
 }

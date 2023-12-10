@@ -54,8 +54,8 @@ public class GuideServiceTest {
                 .activate(true)
                 .status("reparto")
                 .entryDate(new Date())
-                .idEmployee(2)
-                .idCustomer(2)
+                /*.idEmployee(2)
+                .idCustomer(2)*/
                 .build();
 
         guideDtoList = new ArrayList<>();
@@ -166,9 +166,10 @@ public class GuideServiceTest {
     @Test
     void findByEntryDateTest() {
         when(guideRepository.findByEntryDate(any(Date.class))).thenReturn(guideEntityList);
-        List<GuideDto> guideDtos = guideService.findByEntryDate(new Date());
+        Date entryDate = new Date();
+        List<GuideDto> guideDtos = guideService.findByEntryDate(entryDate);
         assertNotNull(guideDtos);
-        verify(guideRepository, times(1)).findByEntryDate(new Date());
+        verify(guideRepository, times(1)).findByEntryDate(entryDate);
     }
 
     @Test

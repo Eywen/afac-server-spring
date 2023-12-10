@@ -41,7 +41,7 @@ public class CustomerEntity {
     @Column(name = "habilitado")
     private boolean activate;
 
-    @OneToMany
+    /*@OneToMany
     @JoinColumn(name = "id_cliente")
-    private List<GuideEntity> guidesList;
+    private List<GuideEntity> guidesList;*/
 }

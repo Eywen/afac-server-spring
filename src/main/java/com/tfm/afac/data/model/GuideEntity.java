@@ -2,10 +2,7 @@ package com.tfm.afac.data.model;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Builder
@@ -36,9 +33,19 @@ public class GuideEntity {
     private Date entryDate;
     @Column(name = "fecha_entrega")
     private Date deliveryDate;
-    @Column(name = "id_cliente")
+    @Column(name = "fecha_cargue")
+    private Date assignmentDate;
+    /*@Column(name = "id_cliente")
     private int customerId;
     @Column(name = "id_empleado")
-    private int employeeId;
+    private int employeeId;*/
+
+    @ManyToOne
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id")
+    private CustomerEntity customer;
+
+    @ManyToOne
+    @JoinColumn(name = "id_empleado", referencedColumnName = "id")
+    private EmployeeEntity employee;
 
 }

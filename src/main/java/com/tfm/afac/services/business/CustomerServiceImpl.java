@@ -79,7 +79,7 @@ public class CustomerServiceImpl implements CustomerService{
     public Page<CustomerEntity> readAllPageable(Pageable pageable) {
         return customerRepository.findAll(pageable);
     }
-    public Page<CustomerEntity> readAllActive(Pageable pageable, boolean activate) {
+    public Page<CustomerEntity> findByActivatePage(Pageable pageable, boolean activate) {
             Specification<CustomerEntity> spec = (root, query, cb) -> {
                 List<Predicate> predicates = new ArrayList<>();
                 if (activate) {
@@ -89,5 +89,12 @@ public class CustomerServiceImpl implements CustomerService{
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             return customerRepository.findAll(spec, pageable);
+    }
+
+    @Override
+    public List<CustomerDto> findByActivate(boolean activate) {
+        return customerRepository.findByactivate(activate).stream()
+                .map(CustomerMapper.INSTANCIA::customerEntityToCustomerDto)
+                .collect(Collectors.toList());
     }
 }

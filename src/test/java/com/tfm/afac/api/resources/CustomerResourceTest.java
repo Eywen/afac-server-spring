@@ -143,13 +143,13 @@ public class CustomerResourceTest {
         boolean asc = true;
 
         Page<CustomerEntity> mockCustomerPage = new PageImpl<>(Collections.emptyList());
-        when(customerService.readAllActive(any(PageRequest.class), anyBoolean())).thenReturn(mockCustomerPage);
-        ResponseEntity<Page<CustomerEntity>> responseEntity = customerResource.findAllActive(page, size, order, asc);
+        when(customerService.findByActivatePage(any(PageRequest.class), anyBoolean())).thenReturn(mockCustomerPage);
+        ResponseEntity<Page<CustomerEntity>> responseEntity = customerResource.findAllActivePage(page, size, order, asc);
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(mockCustomerPage, responseEntity.getBody());
-        verify(customerService, times(1)).readAllActive(any(PageRequest.class), anyBoolean());
+        verify(customerService, times(1)).findByActivatePage(any(PageRequest.class), anyBoolean());
 
     }
 
@@ -162,10 +162,10 @@ public class CustomerResourceTest {
 
         Page<CustomerEntity> mockCustomerPage = new PageImpl<>(Arrays.asList(customerEntity));
         when(customerService.readAllPageable(any(PageRequest.class))).thenReturn(mockCustomerPage);
-        ResponseEntity<Page<CustomerEntity>> responseEntity = customerResource.findAllActive(page, size, order, asc);
+        ResponseEntity<Page<CustomerEntity>> responseEntity = customerResource.findAllActivePage(page, size, order, asc);
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(customerService, times(1)).readAllActive(any(PageRequest.class),anyBoolean());
+        verify(customerService, times(1)).findByActivatePage(any(PageRequest.class),anyBoolean());
     }
 
     @Test
@@ -177,9 +177,9 @@ public class CustomerResourceTest {
 
         Page<CustomerEntity> mockCustomerPage = new PageImpl<>(Collections.emptyList());
         when(customerService.readAllPageable(any(PageRequest.class))).thenReturn(mockCustomerPage);
-        ResponseEntity<Page<CustomerEntity>> responseEntity = customerResource.findAllActive(page, size, order, asc);
+        ResponseEntity<Page<CustomerEntity>> responseEntity = customerResource.findAllActivePage(page, size, order, asc);
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(customerService, times(2)).readAllActive(any(PageRequest.class),anyBoolean());
+        verify(customerService, times(2)).findByActivatePage(any(PageRequest.class),anyBoolean());
     }
 }

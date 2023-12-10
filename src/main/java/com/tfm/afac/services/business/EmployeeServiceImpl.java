@@ -1,10 +1,12 @@
 package com.tfm.afac.services.business;
 
+import com.tfm.afac.api.dtos.CustomerDto;
 import com.tfm.afac.api.dtos.EmployeeDto;
 import com.tfm.afac.data.daos.EmployeeRepository;
 import com.tfm.afac.data.model.EmployeeEntity;
 import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
+import com.tfm.afac.services.mapper.CustomerMapper;
 import com.tfm.afac.services.mapper.EmployeeMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -91,5 +93,12 @@ public class EmployeeServiceImpl implements EmployeeService{
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             };
             return employeeRepository.findAll(spec, pageable);
+    }
+
+    @Override
+    public List<EmployeeDto> findByActivate(boolean activate) {
+        return employeeRepository.findByactivate(activate).stream()
+                .map(EmployeeMapper.INSTANCIA::employeeEntityToEmployeeDto)
+                .collect(Collectors.toList());
     }
 }

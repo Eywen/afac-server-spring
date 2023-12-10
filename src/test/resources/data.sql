@@ -12,3 +12,12 @@ VALUES(2, 2222222222, 'empleado2', 'apellido2', 'apellido2_1', 'calle 2 # 2-2', 
 INSERT INTO empleado
 (id, cedula, nombre, primer_apellido, segundo_apellido, direccion, ciudad, telefono, habilitado, fecha_inicio, fecha_fin)
 VALUES(3, 111111111, 'empleado1_3', 'apellido1_1', 'apellido2_1', 'calle 1 # 1 - 1', 'Florida', 111111111111, 1, '2023-06-17', NULL);
+
+
+INSERT INTO cliente
+(id, nombre, direccion, ciudad, telefono, habilitado, fecha_corte, fecha_inicio, fecha_fin)
+VALUES(1, 'cliente1', 'calle 1 # 1-1', 'Florida', 1111111111, 1, 25, '2023-11-25', NULL);
+
+INSERT INTO cliente
+(id, nombre, direccion, ciudad, telefono, habilitado, fecha_corte, fecha_inicio, fecha_fin)
+VALUES(2, 'cliente2', 'calle 2 # 2-2', 'Cali', 2222222222, 0, 20, '2023-10-20', NULL);

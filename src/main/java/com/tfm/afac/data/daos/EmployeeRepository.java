@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,5 +15,6 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Intege
 
     Optional< EmployeeEntity > findByCedula(long cedula);
 
-    Page<EmployeeEntity> findByactivate(Pageable pageable,boolean activate);
+    //Page<EmployeeEntity> findByactivate(Pageable pageable,boolean activate);
+    List<EmployeeEntity> findByactivate(boolean activate);
 }

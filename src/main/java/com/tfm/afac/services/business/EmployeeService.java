@@ -19,4 +19,6 @@ public interface EmployeeService {
 
     Page<EmployeeEntity> readAllPageable(Pageable pageable);
     Page<EmployeeEntity> readAllActive(Pageable pageable, boolean activate);
+
+    List<EmployeeDto> findByActivate(boolean activate);
 }

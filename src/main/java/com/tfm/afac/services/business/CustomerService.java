@@ -18,5 +18,6 @@ public interface CustomerService {
     List<CustomerDto> readAll();
 
     Page<CustomerEntity> readAllPageable(Pageable pageable);
-    Page<CustomerEntity> readAllActive(Pageable pageable, boolean activate);
+    Page<CustomerEntity> findByActivatePage(Pageable pageable, boolean activate);
+    List<CustomerDto> findByActivate(boolean activate);
 }

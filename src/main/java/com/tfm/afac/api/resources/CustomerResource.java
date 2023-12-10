@@ -25,6 +25,8 @@ public class CustomerResource {
     public static final String CUSTOMERS = "/customers";
     private static final String CUSTOMER_ID = "/{id}";
     private static final String DISABLE = "/disable";
+    private static final String ACTIVATE = "/activate";
+    private static final String STRING_ACTIVATE = "/{activated}";
 
     @Autowired
     private CustomerService customerService;
@@ -94,18 +96,29 @@ public class CustomerResource {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
     }
+
     @SecurityRequirement(name = "basicAuth")
-    @GetMapping("/readallactivate")
-    public ResponseEntity<Page<CustomerEntity>>  findAllActive (
+    @GetMapping(ACTIVATE + STRING_ACTIVATE)
+    public ResponseEntity<List<CustomerDto>> findByActivate(@PathVariable String activated){
+        try {
+            List<CustomerDto> customerList = customerService.findByActivate(Boolean.valueOf(activated));
+            return ResponseEntity.status(HttpStatus.OK).body(customerList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+    @SecurityRequirement(name = "basicAuth")
+    @GetMapping(ACTIVATE)
+    public ResponseEntity<Page<CustomerEntity>> findAllActivePage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "order") String order,
             @RequestParam(defaultValue = "true") boolean asc
     ){
         try {
-            Page<CustomerEntity> customerDtos = customerService.readAllActive(PageRequest.of(page,size, Sort.by(order)),true);
+            Page<CustomerEntity> customerDtos = customerService.findByActivatePage(PageRequest.of(page,size, Sort.by(order)),true);
             if (!asc)
-                customerDtos = customerService.readAllActive(PageRequest.of(page,size, Sort.by(order).descending()),true);
+                customerDtos = customerService.findByActivatePage(PageRequest.of(page,size, Sort.by(order).descending()),true);
 
             return ResponseEntity.status(HttpStatus.OK).body(customerDtos);
         } catch (Exception e) {

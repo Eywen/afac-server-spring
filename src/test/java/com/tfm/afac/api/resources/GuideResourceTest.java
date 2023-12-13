@@ -1,9 +1,6 @@
 package com.tfm.afac.api.resources;
 
-import com.tfm.afac.api.dtos.EmployeeDto;
 import com.tfm.afac.api.dtos.GuideDto;
-import com.tfm.afac.data.model.StatusGuideEnum;
-import com.tfm.afac.services.business.EmployeeService;
 import com.tfm.afac.services.business.GuideService;
 import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
@@ -16,10 +13,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -89,7 +84,7 @@ public class GuideResourceTest {
     @Test
     void testFindById() {
 
-        when(guideService.findById(anyLong())).thenReturn(guideDto);
+        when(guideService.findByIdGuide(anyLong())).thenReturn(guideDto);
 
         ResponseEntity<GuideDto> response = guideResource.findById(1L);
 
@@ -97,7 +92,7 @@ public class GuideResourceTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(guideDto, response.getBody());
 
-        verify(guideService, times(1)).findById(anyLong());
+        verify(guideService, times(1)).findByIdGuide(anyLong());
     }
 
     @Test

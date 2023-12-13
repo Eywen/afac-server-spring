@@ -61,7 +61,7 @@ public class GuideServiceImpl implements GuideService{
 
 
     @Override
-    public GuideDto findById(Long id) {
+    public GuideDto findByIdGuide(Long id) {
         GuideEntity guide = guideRepository.findByIdGuide(id)
                 .orElseThrow(() -> new NotFoundException("No se encontró la guia: " + id));
 

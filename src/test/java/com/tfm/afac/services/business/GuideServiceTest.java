@@ -13,12 +13,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -110,7 +108,7 @@ public class GuideServiceTest {
     void findByIdGuideTest(){
         when(guideRepository.findByIdGuide(anyLong()))
                 .thenReturn(Optional.of(guide));
-        this.guideService.findById(1L);
+        this.guideService.findByIdGuide(1L);
         assertNotNull( this.guideRepository.findByIdGuide(guideDto.getIdGuide()));
     }
 

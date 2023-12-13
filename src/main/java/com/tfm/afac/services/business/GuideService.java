@@ -9,7 +9,7 @@ public interface GuideService {
 
     GuideDto update(GuideDto guideDto);
 
-    GuideDto findById(Long id);
+    GuideDto findByIdGuide(Long id);
 
     List<GuideDto> findByEmployeeId(Integer id);
 

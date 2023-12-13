@@ -1,6 +1,7 @@
 package com.tfm.afac.api.resources;
 
 import com.tfm.afac.api.dtos.GuideDto;
+import com.tfm.afac.data.model.SearchGuideOptionEnum;
 import com.tfm.afac.data.model.StatusGuideEnum;
 import com.tfm.afac.services.business.GuideService;
 import com.tfm.afac.services.exceptions.ForbiddenException;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(GuideResource.GUIDE)
@@ -32,6 +34,10 @@ public class GuideResource {
     private static final String ENTRY_DATE = "/entrydate";
     private static final String DATE = "/{date}";
     private static final String DELIVERY_DATE = "/deliverydate";
+    private static final String DISABLE = "/disable";
+    private static final String GUIDE_ID = "/{guideid}";
+    private static final String STATUS = "/status";
+    private static final String SEARCH_OPTION = "/searchoption";
 
     @Autowired
     private GuideService guideService;
@@ -68,7 +74,7 @@ public class GuideResource {
     @GetMapping(ID)
     public ResponseEntity<GuideDto> findById (@PathVariable Long id){
         try {
-            GuideDto createdGuide = guideService.findById(id);
+            GuideDto createdGuide = guideService.findByIdGuide(id);
             return ResponseEntity.status(HttpStatus.OK).body(createdGuide);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GuideDto());
@@ -155,6 +161,41 @@ public class GuideResource {
             log.error("Error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    @SecurityRequirement(name = "basicAuth")
+    @PutMapping(DISABLE + GUIDE_ID)
+    public ResponseEntity<GuideDto> disable (@PathVariable Long guideid){
+        try {
+            GuideDto guide = guideService.findByIdGuide(guideid);
+            if (null != guide){
+                guide.setActivate(false);
+                GuideDto updatedGuide = guideService.update(guide);
+                return ResponseEntity.status(HttpStatus.OK).body(updatedGuide);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @SecurityRequirement(name = "basicAuth")
+    @GetMapping(STATUS)
+    public ResponseEntity<List<String>> getStatus (){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Stream.of(StatusGuideEnum.values())
+                        .map(StatusGuideEnum::getStatus)
+                        .collect(Collectors.toList()));
+    }
+
+    @SecurityRequirement(name = "basicAuth")
+    @GetMapping(SEARCH_OPTION)
+    public ResponseEntity<List<String>> getSearchOption (){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Stream.of(SearchGuideOptionEnum.values())
+                        .map(SearchGuideOptionEnum::getSearch)
+                        .collect(Collectors.toList()));
     }
 
 }

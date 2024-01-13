@@ -12,13 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,6 +37,9 @@ public class GuideResource {
     private static final String GUIDE_ID = "/{guideid}";
     private static final String STATUS = "/status";
     private static final String SEARCH_OPTION = "/searchoption";
+    private static final String SEARCH = "/search";
+    private static final String SEARCH_VALUE = "/{searchvalue}";
+    private static final String OPTION = "/{searchoption}";
 
     @Autowired
     private GuideService guideService;
@@ -110,27 +112,27 @@ public class GuideResource {
     }
     
 
-    @SecurityRequirement(name = "basicAuth")
+    /*@SecurityRequirement(name = "basicAuth")
     @GetMapping( )
     public ResponseEntity<List<GuideDto>> findByStatus (@RequestParam String status){
 
         try {
-            if (Arrays.stream(StatusGuideEnum.values())
+            /*if (Arrays.stream(StatusGuideEnum.values())
                     .map(elem -> elem.getStatus())
                     .collect(Collectors.toList()).contains(status)
-            ){
-                List<GuideDto> createdGuide = guideService.findByStatus(status);
+            ){*/
+               /* List<GuideDto> createdGuide = guideService.findByStatus(status);
                 return ResponseEntity.status(HttpStatus.OK).body(createdGuide);
-            }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (NotFoundException e) {
+           // }
+            //return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+       /* } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-    }
+    }*/
 
-    @SecurityRequirement(name = "basicAuth")
+    /*@SecurityRequirement(name = "basicAuth")
     @GetMapping(ENTRY_DATE + DATE)
     public ResponseEntity<List<GuideDto>> findByEntryDate (@PathVariable String date){
 
@@ -144,9 +146,9 @@ public class GuideResource {
             log.error("Error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-    }
+    }*/
 
-    @SecurityRequirement(name = "basicAuth")
+    /*@SecurityRequirement(name = "basicAuth")
     @GetMapping(DELIVERY_DATE + DATE)
     public ResponseEntity<List<GuideDto>> findByDeliveryDate (@PathVariable String date){
         System.out.println("strDate: "+date);
@@ -161,7 +163,7 @@ public class GuideResource {
             log.error("Error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-    }
+    }*/
 
     @SecurityRequirement(name = "basicAuth")
     @PutMapping(DISABLE + GUIDE_ID)
@@ -181,6 +183,21 @@ public class GuideResource {
     }
 
     @SecurityRequirement(name = "basicAuth")
+    @GetMapping(SEARCH + OPTION + SEARCH_VALUE)
+    public ResponseEntity<List<GuideDto>> searhOption (@PathVariable String searchoption, @PathVariable String searchvalue){
+        try {
+            List<GuideDto> guide = guideService.findBySearchOption(SearchGuideOptionEnum.valueOf(searchoption),searchvalue);
+            if (!CollectionUtils.isEmpty(guide)){
+                return ResponseEntity.status(HttpStatus.OK).body(guide);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @SecurityRequirement(name = "basicAuth")
     @GetMapping(STATUS)
     public ResponseEntity<List<String>> getStatus (){
         return ResponseEntity.status(HttpStatus.OK)
@@ -190,12 +207,26 @@ public class GuideResource {
     }
 
     @SecurityRequirement(name = "basicAuth")
-    @GetMapping(SEARCH_OPTION)
-    public ResponseEntity<List<String>> getSearchOption (){
-        return ResponseEntity.status(HttpStatus.OK)
+    @GetMapping( SEARCH + SEARCH_OPTION)
+    public ResponseEntity<List<Map<String, String>>> getSearchOption (){
+        //List<SearchGuideOptionEnum> list = Arrays.asList(SearchGuideOptionEnum.values());
+        /*return ResponseEntity.status(HttpStatus.OK)
                 .body(Stream.of(SearchGuideOptionEnum.values())
                         .map(SearchGuideOptionEnum::getSearch)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList()));*/
+        List<Map<String, String>> list = Stream.of(SearchGuideOptionEnum.values()).parallel().map(temp -> {
+            Map<String, String> obj = new HashMap<String, String>();
+            obj.put("search", temp.getSearch());
+            obj.put("strState", temp.getStrState());
+            obj.put("name", temp.name());
+            return obj;
+        }).collect(Collectors.toList());
+
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(list);
     }
+
+
 
 }

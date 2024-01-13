@@ -3,6 +3,8 @@ package com.tfm.afac.services.business;
 import com.tfm.afac.api.dtos.GuideDto;
 import com.tfm.afac.data.daos.GuideRepository;
 import com.tfm.afac.data.model.GuideEntity;
+import com.tfm.afac.data.model.SearchGuideOptionEnum;
+import com.tfm.afac.data.model.StatusGuideEnum;
 import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
 import com.tfm.afac.services.mapper.CustomerMapper;
@@ -11,6 +13,9 @@ import com.tfm.afac.services.mapper.GuideMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,11 +101,14 @@ public class GuideServiceImpl implements GuideService{
 
     @Override
     public List<GuideDto> findByStatus(String status) {
-        List<GuideDto> guideDtoList =  guideRepository.findByStatus(status)
-                .stream()
-                .map(GuideMapper.INSTANCIA::guideEntityToGuideDto)
-                .collect(Collectors.toList());
-        return getReturnGuideDtos(guideDtoList);
+        if (isValidStatus(status)) {
+            List<GuideDto> guideDtoList = guideRepository.findByStatus(status)
+                    .stream()
+                    .map(GuideMapper.INSTANCIA::guideEntityToGuideDto)
+                    .collect(Collectors.toList());
+            return getReturnGuideDtos(guideDtoList);
+        } else
+            throw new NotFoundException("No se encontró guia con estado: " + status);
     }
 
     @Override
@@ -120,5 +128,39 @@ public class GuideServiceImpl implements GuideService{
                 .map(GuideMapper.INSTANCIA::guideEntityToGuideDto)
                 .collect(Collectors.toList());
         return getReturnGuideDtos(guideDtoList);
+    }
+    @Override
+    public List<GuideDto> findByAssignmentDate(Date assignmentDate) {
+        List<GuideDto> guideDtoList = guideRepository.findByAssignmentDate(assignmentDate)
+                .stream()
+                .map(GuideMapper.INSTANCIA::guideEntityToGuideDto)
+                .collect(Collectors.toList());
+        return getReturnGuideDtos(guideDtoList);
+    }
+
+    @Override
+    public List<GuideDto> findBySearchOption(SearchGuideOptionEnum searchGuideOption, String searchValue) {
+
+        switch (searchGuideOption){
+            case STATE: return findByStatus(searchValue);
+            case ENTRY_DATE: return findByEntryDate(getDate(searchValue));
+            case ASSIGNMENT_DATE: return findByAssignmentDate(getDate(searchValue));
+            case DELIVERY_DATE: return findByDeliveryDate(getDate(searchValue));
+        }
+        return null;
+    }
+
+    private Date getDate(String strDate)  {
+        try {
+            return (new SimpleDateFormat("yyyy-MM-dd")).parse(strDate);
+        } catch (ParseException e) {
+            throw new RuntimeException("Error de parseo de fecha de String a Date: " + strDate);
+        }
+    }
+
+    private boolean isValidStatus(String status) {
+        return Arrays.stream(StatusGuideEnum.values())
+                .map(elem -> elem.getStatus())
+                .collect(Collectors.toList()).contains(status);
     }
 }

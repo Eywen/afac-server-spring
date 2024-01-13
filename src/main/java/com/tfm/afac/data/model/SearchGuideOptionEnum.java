@@ -1,18 +1,25 @@
 package com.tfm.afac.data.model;
 
 public enum SearchGuideOptionEnum {
-    STATE("status"),
-    ENTRY_DATE("entryDate"),
-    ASSIGNMENT_DATE("assignmentDate"),
-    DELIVERY_DATE("deliveryDate");
+    STATE("Status", "Estado"),
+    ENTRY_DATE("EntryDate","Fecha entrada"),
+    ASSIGNMENT_DATE("AssignmentDate", "Fecha cargue"),
+    DELIVERY_DATE("DeliveryDate", "Fecha entrega");
 
     private String search;
+    private String strState;
 
-    private SearchGuideOptionEnum(String status) {
-        this.search = status;
+    private SearchGuideOptionEnum(String search, String strState) {
+
+        this.search = search;
+        this.strState = strState;
     }
 
     public String getSearch() {
-        return search;
+        return this.search;
+    }
+
+    public String getStrState() {
+        return this.strState;
     }
 }

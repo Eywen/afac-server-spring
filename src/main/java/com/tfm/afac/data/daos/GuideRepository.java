@@ -1,6 +1,7 @@
 package com.tfm.afac.data.daos;
 
 import com.tfm.afac.data.model.GuideEntity;
+import org.springframework.beans.PropertyValues;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,6 @@ public interface GuideRepository extends JpaRepository<GuideEntity, Long >, JpaS
     List<GuideEntity> findByEntryDate(Date entryDate);
 
     List<GuideEntity> findByDeliveryDate(Date deliveryDate);
+
+    List<GuideEntity> findByAssignmentDate(Date assignmentDate);
 }

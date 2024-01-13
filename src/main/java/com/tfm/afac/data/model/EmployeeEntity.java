@@ -4,6 +4,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.List;
 
 @Builder
 @Data //@ToString, @EqualsAndHashCode, @Getter, @Setter, @RequiredArgsConstructor
@@ -43,4 +44,8 @@ public class EmployeeEntity  {
     private Date finishDate;
     @Column(name = "habilitado")
     private boolean activate;
+
+    /*@OneToMany
+    @JoinColumn(name = "id_empleado")
+    private List<GuideEntity> guidesList;*/
 }

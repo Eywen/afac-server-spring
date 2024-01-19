@@ -11,7 +11,6 @@ public class AfacApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(AfacApplication.class, args);
-		System.out.println("pass encript: "+new BCryptPasswordEncoder().encode("secreto"));
 	}
 
 }

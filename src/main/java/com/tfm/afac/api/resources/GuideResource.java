@@ -30,9 +30,6 @@ public class GuideResource {
     public static final String ID = "/{id}";
     private static final String EMPLOYEE = "/employee";
     private static final String CUSTOMER = "/customer";
-    private static final String ENTRY_DATE = "/entrydate";
-    private static final String DATE = "/{date}";
-    private static final String DELIVERY_DATE = "/deliverydate";
     private static final String DISABLE = "/disable";
     private static final String GUIDE_ID = "/{guideid}";
     private static final String STATUS = "/status";
@@ -41,9 +38,13 @@ public class GuideResource {
     private static final String SEARCH_VALUE = "/{searchvalue}";
     private static final String OPTION = "/{searchoption}";
 
-    @Autowired
+
     private GuideService guideService;
 
+    @Autowired
+    public GuideResource(GuideService guideService) {
+        this.guideService = guideService;
+    }
 
     @SecurityRequirement(name = "basicAuth")
     @PostMapping
@@ -110,60 +111,6 @@ public class GuideResource {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    
-
-    /*@SecurityRequirement(name = "basicAuth")
-    @GetMapping( )
-    public ResponseEntity<List<GuideDto>> findByStatus (@RequestParam String status){
-
-        try {
-            /*if (Arrays.stream(StatusGuideEnum.values())
-                    .map(elem -> elem.getStatus())
-                    .collect(Collectors.toList()).contains(status)
-            ){*/
-               /* List<GuideDto> createdGuide = guideService.findByStatus(status);
-                return ResponseEntity.status(HttpStatus.OK).body(createdGuide);
-           // }
-            //return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-       /* } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }*/
-
-    /*@SecurityRequirement(name = "basicAuth")
-    @GetMapping(ENTRY_DATE + DATE)
-    public ResponseEntity<List<GuideDto>> findByEntryDate (@PathVariable String date){
-
-        try {
-            Date entryDate = (new SimpleDateFormat("yyyy-MM-dd")).parse(date);
-            List<GuideDto> createdGuide = guideService.findByEntryDate(entryDate);
-            return ResponseEntity.status(HttpStatus.OK).body(createdGuide);
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            log.error("Error: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }*/
-
-    /*@SecurityRequirement(name = "basicAuth")
-    @GetMapping(DELIVERY_DATE + DATE)
-    public ResponseEntity<List<GuideDto>> findByDeliveryDate (@PathVariable String date){
-        System.out.println("strDate: "+date);
-        try {
-            Date deliveryDate = (new SimpleDateFormat("yyyy-MM-dd")).parse(date);
-            System.out.println("Searching guides : "+deliveryDate);
-            List<GuideDto> deliveryDateGuides = guideService.findByDeliveryDate(deliveryDate);
-            return ResponseEntity.status(HttpStatus.OK).body(deliveryDateGuides);
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            log.error("Error: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }*/
 
     @SecurityRequirement(name = "basicAuth")
     @PutMapping(DISABLE + GUIDE_ID)
@@ -187,6 +134,7 @@ public class GuideResource {
     public ResponseEntity<List<GuideDto>> searhOption (@PathVariable String searchoption, @PathVariable String searchvalue){
         try {
             List<GuideDto> guide = guideService.findBySearchOption(SearchGuideOptionEnum.valueOf(searchoption),searchvalue);
+            log.info("Bsqueda guia por opcion: {} valor: {}", searchoption, searchvalue);
             if (!CollectionUtils.isEmpty(guide)){
                 return ResponseEntity.status(HttpStatus.OK).body(guide);
             } else {
@@ -209,11 +157,6 @@ public class GuideResource {
     @SecurityRequirement(name = "basicAuth")
     @GetMapping( SEARCH + SEARCH_OPTION)
     public ResponseEntity<List<Map<String, String>>> getSearchOption (){
-        //List<SearchGuideOptionEnum> list = Arrays.asList(SearchGuideOptionEnum.values());
-        /*return ResponseEntity.status(HttpStatus.OK)
-                .body(Stream.of(SearchGuideOptionEnum.values())
-                        .map(SearchGuideOptionEnum::getSearch)
-                        .collect(Collectors.toList()));*/
         List<Map<String, String>> list = Stream.of(SearchGuideOptionEnum.values()).parallel().map(temp -> {
             Map<String, String> obj = new HashMap<String, String>();
             obj.put("search", temp.getSearch());

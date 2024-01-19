@@ -1,8 +1,5 @@
 package com.tfm.afac.api.dtos;
 
-import com.tfm.afac.data.model.CustomerEntity;
-import com.tfm.afac.data.model.EmployeeEntity;
-import com.tfm.afac.data.model.StatusGuideEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,9 +26,6 @@ public class GuideDto implements Serializable {
     private Date entryDate;
     private Date deliveryDate;
     private Date assignmentDate;
-    /*private int idCustomer;
-    private int idEmployee;*/
-
     private EmployeeDto employee;
     private CustomerDto customer;
 }

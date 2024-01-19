@@ -56,8 +56,6 @@ class EmployeeServiceTest {
     void CreateEmployeeTest() {
 
         EmployeeEntity employee = EmployeeMapper.INSTANCIA.employeeDTOToEmployeeEntity(employeeDto);
-        when(employeeRepository.findByCedula(anyLong())).thenReturn(Optional.empty());
-
         when(employeeRepository.save(any (EmployeeEntity.class))).thenReturn(employee);
         EmployeeDto result = this.employeeService.create(employeeDto);
 

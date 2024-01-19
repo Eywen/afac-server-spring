@@ -1,6 +1,7 @@
 package com.tfm.afac.data.model;
 
 import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -11,8 +12,8 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Entity
-@Table(name = "empleado")
-public class EmployeeEntity  {
+@Table(name = "cliente")
+public class CustomerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,15 +21,7 @@ public class EmployeeEntity  {
     @NonNull
     @NotBlank
     @Column(name = "nombre")
-    private String employeeName;
-    @NonNull
-    @NotBlank
-    @Column(name = "primer_apellido")
-    private String lastName1;
-    @Column(name = "segundo_apellido")
-    private String lastName2;
-    @NonNull
-    private long cedula;
+    private String customerName;
     @Column(name = "ciudad")
     private String city;
     @NonNull
@@ -38,14 +31,17 @@ public class EmployeeEntity  {
     @NonNull
     @Column(name = "telefono")
     private long telephone;
+    @Column(name = "fecha_corte")
+    private Integer closeMonthDay;
     @Column(name = "fecha_inicio")
     private Date iniDate;
     @Column(name = "fecha_fin")
     private Date finishDate;
+    @NonNull
     @Column(name = "habilitado")
     private boolean activate;
 
     /*@OneToMany
-    @JoinColumn(name = "id_empleado")
+    @JoinColumn(name = "id_cliente")
     private List<GuideEntity> guidesList;*/
 }

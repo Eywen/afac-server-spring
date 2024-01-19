@@ -27,6 +27,9 @@ public class EmployeeResource {
     private static final String EMPLOYEE_ID = "/{id}";
     private static final String DISABLE = "/disable";
 
+    private static final String ACTIVATE = "/activate";
+    private static final String STRING_ACTIVATE = "/{activated}";
+
     @Autowired
     private EmployeeService employeeService;
 
@@ -77,7 +80,7 @@ public class EmployeeResource {
     public ResponseEntity<EmployeeDto> findById (@PathVariable Integer id){
         try {
             EmployeeDto createdEmployee = employeeService.findById(id);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
+            return ResponseEntity.status(HttpStatus.OK).body(createdEmployee);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.OK).body(new EmployeeDto());
         } catch (Exception e) {
@@ -90,6 +93,16 @@ public class EmployeeResource {
     public ResponseEntity<List<EmployeeDto>> findAll (){
         try {
             List<EmployeeDto> employeeList = employeeService.readAll();
+            return ResponseEntity.status(HttpStatus.OK).body(employeeList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+    @SecurityRequirement(name = "basicAuth")
+    @GetMapping(ACTIVATE + STRING_ACTIVATE)
+    public ResponseEntity<List<EmployeeDto>> findByActivate (@PathVariable String activated){
+        try {
+            List<EmployeeDto> employeeList = employeeService.findByActivate(Boolean.valueOf(activated));
             return ResponseEntity.status(HttpStatus.OK).body(employeeList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());

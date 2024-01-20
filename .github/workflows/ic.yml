@@ -11,9 +11,9 @@ jobs:
         with: {fetch-depth: 0}
       - uses: actions/setup-java@v1
         with:
-          java-version: 11
+          java-version: 17
       - name: Unit & Integration Tests
-        run: mvn -B verify  sonar:sonar -Dsonar.scanner.force-deprecated-java-version=true # -B: --batch-mode
+        run: mvn -B verify  # -B: --batch-mode
       - name: Sonar
         if: success() # always() failure() success()
         run: >

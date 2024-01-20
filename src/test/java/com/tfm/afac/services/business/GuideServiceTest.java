@@ -118,7 +118,6 @@ public class GuideServiceTest {
         assertThrows(NotFoundException.class, () -> guideService.update(guideDto));
     }
 
-    /////////////
     @Test
     void findByEmployeeIdTest(){
         when(guideRepository.findByEmployeeId(anyInt())).thenReturn(guideEntityList);

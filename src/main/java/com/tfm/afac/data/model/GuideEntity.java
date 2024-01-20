@@ -35,10 +35,6 @@ public class GuideEntity {
     private Date deliveryDate;
     @Column(name = "fecha_cargue")
     private Date assignmentDate;
-    /*@Column(name = "id_cliente")
-    private int customerId;
-    @Column(name = "id_empleado")
-    private int employeeId;*/
 
     @ManyToOne
     @JoinColumn(name = "id_cliente", referencedColumnName = "id")

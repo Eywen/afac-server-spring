@@ -28,8 +28,13 @@ public class CustomerResource {
     private static final String ACTIVATE = "/activate";
     private static final String STRING_ACTIVATE = "/{activated}";
 
-    @Autowired
+
     private CustomerService customerService;
+
+    @Autowired
+    public CustomerResource(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @SecurityRequirement(name = "basicAuth")
     @PostMapping

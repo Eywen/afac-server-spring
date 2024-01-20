@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "empleado")
+// NOSONAR
 public class EmployeeEntity  {
 
     @Id

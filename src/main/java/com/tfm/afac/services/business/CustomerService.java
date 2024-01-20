@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CustomerService {
 
-    CustomerDto create(CustomerDto Customer);
+    CustomerDto create(CustomerDto customer);
 
     CustomerDto update(CustomerDto customer);
 

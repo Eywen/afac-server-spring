@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RestTestConfig
-public class EmployeeResourceTest {
+class EmployeeResourceTest {
 
     @Autowired
     private EmployeeResource employeeResource;

@@ -13,7 +13,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestConfig
-public class GuideRepositoryTest {
+class GuideRepositoryTest {
 
     @Autowired
     GuideRepository guideRepository;

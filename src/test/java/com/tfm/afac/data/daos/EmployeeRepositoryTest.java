@@ -4,14 +4,12 @@ import com.tfm.afac.TestConfig;
 import com.tfm.afac.data.model.EmployeeEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
+
 
 @TestConfig
-public class EmployeeRepositoryTest {
+class EmployeeRepositoryTest {
     @Autowired
     private EmployeeRepository employeeRepository;
 

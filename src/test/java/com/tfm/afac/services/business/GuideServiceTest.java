@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 @TestConfig
-public class GuideServiceTest {
+class GuideServiceTest {
 
     @Autowired
     private GuideService guideService;

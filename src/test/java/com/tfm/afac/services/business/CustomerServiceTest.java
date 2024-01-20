@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @TestConfig
-public class CustomerServiceTest {
+class CustomerServiceTest {
 
     @Autowired
     private CustomerService customerService;

@@ -157,7 +157,7 @@ public class GuideResource {
     @GetMapping( SEARCH + SEARCH_OPTION)
     public ResponseEntity<List<Map<String, String>>> getSearchOption (){
         List<Map<String, String>> list = Stream.of(SearchGuideOptionEnum.values()).parallel().map(temp -> {
-            Map<String, String> obj = new HashMap<String, String>();
+            Map<String, String> obj = new HashMap<>();
             obj.put("search", temp.getSearch());
             obj.put("strState", temp.getStrState());
             obj.put("name", temp.name());

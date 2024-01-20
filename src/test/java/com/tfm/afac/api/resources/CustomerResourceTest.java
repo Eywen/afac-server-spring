@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 @RestTestConfig
-public class CustomerResourceTest {
+class CustomerResourceTest {
 
     @Autowired
     CustomerResource customerResource;

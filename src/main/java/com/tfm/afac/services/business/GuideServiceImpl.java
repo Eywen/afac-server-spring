@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -23,8 +24,13 @@ import java.util.stream.Collectors;
 @Service
 public class GuideServiceImpl implements GuideService{
 
-    @Autowired
+
     private GuideRepository guideRepository;
+
+    @Autowired
+    public GuideServiceImpl(GuideRepository guideRepository) {
+        this.guideRepository = guideRepository;
+    }
 
     @Override
     public GuideDto create(GuideDto guideDto) {
@@ -47,8 +53,6 @@ public class GuideServiceImpl implements GuideService{
                             existingGuide.setEntryDate(guideDto.getEntryDate());
                             existingGuide.setDeliveryDate(guideDto.getDeliveryDate());
                             existingGuide.setRecipient(guideDto.getRecipient());
-                            /*existingGuide.setCustomerId(guideDto.getIdCustomer());
-                            existingGuide.setEmployeeId(guideDto.getIdEmployee());*/
                             existingGuide.setStatus(guideDto.getStatus());
                             existingGuide.setCity(guideDto.getCity());
                             existingGuide.setAddress(guideDto.getAddress());
@@ -93,7 +97,7 @@ public class GuideServiceImpl implements GuideService{
     }
 
     private static List<GuideDto> getReturnGuideDtos(List<GuideDto> guideDtoList) {
-        if (!guideDtoList.isEmpty() && null != guideDtoList)
+        if (null != guideDtoList && !guideDtoList.isEmpty())
             return guideDtoList;
         else
             throw new NotFoundException("No se encontraron guias para estos datos");
@@ -147,7 +151,7 @@ public class GuideServiceImpl implements GuideService{
             case ASSIGNMENT_DATE: return findByAssignmentDate(getDate(searchValue));
             case DELIVERY_DATE: return findByDeliveryDate(getDate(searchValue));
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private Date getDate(String strDate)  {

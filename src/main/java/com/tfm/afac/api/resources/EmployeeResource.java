@@ -30,8 +30,13 @@ public class EmployeeResource {
     private static final String ACTIVATE = "/activate";
     private static final String STRING_ACTIVATE = "/{activated}";
 
-    @Autowired
+
     private EmployeeService employeeService;
+
+    @Autowired
+    public EmployeeResource(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @SecurityRequirement(name = "basicAuth")
     @PostMapping

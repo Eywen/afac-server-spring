@@ -13,7 +13,7 @@ jobs:
         with:
           java-version: 11
       - name: Unit & Integration Tests
-        run: mvn -B verify # -B: --batch-mode
+        run: mvn -B verify  sonar:sonar -Dsonar.scanner.force-deprecated-java-version=true # -B: --batch-mode
       - name: Sonar
         if: success() # always() failure() success()
         run: >

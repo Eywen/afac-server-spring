@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @TestConfig
-public class UserServiceTest {
+class UserServiceTest {
 
     @Autowired
     UserService userService;

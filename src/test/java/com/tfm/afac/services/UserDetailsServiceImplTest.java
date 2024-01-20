@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @TestConfig
-public class UserDetailsServiceImplTest {
+class UserDetailsServiceImplTest {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;

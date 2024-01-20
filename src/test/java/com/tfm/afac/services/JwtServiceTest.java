@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @TestConfig
-public class JwtServiceTest {
+class JwtServiceTest {
 
     @MockBean
     private DecodedJWT decodedJWT;

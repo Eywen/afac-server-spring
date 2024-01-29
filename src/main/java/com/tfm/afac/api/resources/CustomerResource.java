@@ -85,7 +85,7 @@ public class CustomerResource {
             CustomerDto createdCustomer = customerService.findById(id);
             return ResponseEntity.status(HttpStatus.OK).body(createdCustomer);
         } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.OK).body(new CustomerDto());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomerDto());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CustomerDto());
         }

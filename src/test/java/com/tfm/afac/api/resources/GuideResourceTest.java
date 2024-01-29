@@ -85,7 +85,6 @@ class GuideResourceTest {
     void testFindById() {
 
         when(guideService.findByIdGuide(anyLong())).thenReturn(guideDto);
-
         ResponseEntity<GuideDto> response = guideResource.findById(1L);
 
         assertNotNull(response);
@@ -93,6 +92,15 @@ class GuideResourceTest {
         assertEquals(guideDto, response.getBody());
 
         verify(guideService, times(1)).findByIdGuide(anyLong());
+    }
+    @Test
+    void testFindByIdNotFound() {
+
+        when(guideService.findByIdGuide(anyLong())).thenThrow(NotFoundException.class);
+        ResponseEntity<GuideDto> response = guideResource.findById(1L);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test

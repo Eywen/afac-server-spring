@@ -5,6 +5,7 @@ import com.tfm.afac.data.model.EmployeeEntity;
 import com.tfm.afac.services.business.EmployeeService;
 import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
+import com.tfm.afac.services.mapper.EmployeeMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,8 @@ class EmployeeResourceTest {
 
     private EmployeeDto employeeDto;
 
+    private EmployeeEntity employeeEntity;
+
     @BeforeEach
     public void onInit() {
 
@@ -44,6 +48,7 @@ class EmployeeResourceTest {
                 .iniDate(new Date())
                 .activate(true)
                 .build();
+        employeeEntity = EmployeeMapper.INSTANCIA.employeeDTOToEmployeeEntity(employeeDto);
     }
 
     @Test
@@ -114,6 +119,15 @@ class EmployeeResourceTest {
     }
 
     @Test
+    void disableNotFoundTest(){
+        Integer employeeId = 1;
+        when(employeeService.findById(anyInt())).thenReturn(null);
+        ResponseEntity<EmployeeDto> responseEntity = employeeResource.disable(employeeId);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
+
+    @Test
     void findByIdTest(){
         Integer employeeId = 1;
         when(employeeService.findById(anyInt())).thenReturn(employeeDto);
@@ -128,13 +142,38 @@ class EmployeeResourceTest {
     }
 
     @Test
-    void findAllActivate(){
+    void findByIdNotFoundTest(){
+        Integer employeeId = 1;
+        when(employeeService.findById(anyInt())).thenThrow(NotFoundException.class);
+
+        ResponseEntity<EmployeeDto> responseEntity = employeeResource.findById(employeeId);
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
+
+    @Test
+    void findAllActivateAscTest(){
 
         int page = 0;
         int size = 10;
         String order = "order";
         boolean asc = true;
 
+        findAllActivate(page, size, order, asc, 1);
+
+    }
+    @Test
+    void findAllActivateDescTest(){
+
+        int page = 0;
+        int size = 10;
+        String order = "order";
+        boolean asc = false;
+
+        findAllActivate(page, size, order, asc, 2);
+
+    }
+
+    private void findAllActivate(int page, int size, String order, boolean asc, int wantedNumberOfInvocations) {
         Page<EmployeeEntity> mockEmployeePage = new PageImpl<>(Collections.emptyList());
         when(employeeService.readAllActive(any(PageRequest.class), anyBoolean())).thenReturn(mockEmployeePage);
         ResponseEntity<Page<EmployeeEntity>> responseEntity = employeeResource.findAllActive(page, size, order, asc);
@@ -142,7 +181,21 @@ class EmployeeResourceTest {
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(mockEmployeePage, responseEntity.getBody());
-        verify(employeeService, times(1)).readAllActive(any(PageRequest.class), anyBoolean());
+        verify(employeeService, times(wantedNumberOfInvocations)).readAllActive(any(PageRequest.class), anyBoolean());
+    }
+
+    @Test
+    void findAllTest(){
+
+        List<EmployeeDto> employeeList = new ArrayList<>();
+        employeeList.add(employeeDto);
+        when(employeeService.readAll()).thenReturn(employeeList);
+        ResponseEntity<List<EmployeeDto>> responseEntity = employeeResource.findAll();
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(employeeList, responseEntity.getBody());
+        verify(employeeService, times(1)).readAll();
 
     }
 

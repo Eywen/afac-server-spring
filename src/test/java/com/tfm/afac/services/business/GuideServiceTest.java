@@ -4,6 +4,7 @@ import com.tfm.afac.TestConfig;
 import com.tfm.afac.api.dtos.GuideDto;
 import com.tfm.afac.data.daos.GuideRepository;
 import com.tfm.afac.data.model.GuideEntity;
+import com.tfm.afac.data.model.SearchGuideOptionEnum;
 import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
 import com.tfm.afac.services.mapper.GuideMapper;
@@ -189,4 +190,33 @@ class GuideServiceTest {
         when(guideRepository.findByDeliveryDate(any(Date.class))).thenReturn(new ArrayList<>());
         assertThrows(NotFoundException.class, () -> guideService.findByDeliveryDate(new Date()));
     }
+
+    @Test
+    void testFindByAssignmentDate() {
+
+        Date assignmentDate = new Date();
+        List<GuideEntity> guideEntityList = new ArrayList<>();
+        guideEntityList.add(guide);
+
+        when(guideRepository.findByAssignmentDate(assignmentDate)).thenReturn(guideEntityList);
+        List<GuideDto> result = guideService.findByAssignmentDate(assignmentDate);
+
+        verify(guideRepository, times(1)).findByAssignmentDate(assignmentDate);
+        verify(guideRepository, never()).findByStatus(anyString());
+
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void testFindByAssignmentDateNotFound() {
+
+        Date assignmentDate = new Date();
+        List<GuideEntity> guideEntityList = new ArrayList<>();
+        guideEntityList.add(guide);
+
+        when(guideRepository.findByAssignmentDate(assignmentDate)).thenReturn(new ArrayList<>());
+
+        assertThrows(NotFoundException.class, () -> guideService.findByAssignmentDate(assignmentDate));
+    }
+
 }

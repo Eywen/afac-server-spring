@@ -12,8 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -119,4 +123,87 @@ class CustomerServiceTest {
         when(customerRepository.findAll(any(Pageable.class))).thenReturn(page);
         assertTrue( this.customerService.readAllPageable(pageable).isEmpty());
     }
+
+    /////////////////////////////
+    // ... (código existente)
+
+    @Test
+    void findByActivateTrueTest() {
+        boolean activate = true;
+        when(customerRepository.findByactivate(activate)).thenReturn(Collections.singletonList(customerEntity));
+
+        List<CustomerDto> result = customerService.findByActivate(activate);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(customerDto.getId(), result.get(0).getId());
+
+        verify(customerRepository, times(1)).findByactivate(activate);
+    }
+
+    @Test
+    void findByActivateFalseTest() {
+        boolean activate = false;
+        when(customerRepository.findByactivate(activate)).thenReturn(Collections.emptyList());
+
+        List<CustomerDto> result = customerService.findByActivate(activate);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+
+        verify(customerRepository, times(1)).findByactivate(activate);
+    }
+
+    @Test
+    void findByActivatePageTrueTest() {
+        boolean activate = true;
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(customerRepository.findAll(any(Specification.class), eq(pageable)))
+                .thenReturn(new PageImpl<>(Collections.singletonList(customerEntity), pageable, 1));
+
+        Page<CustomerEntity> result = customerService.findByActivatePage(pageable, activate);
+
+        assertNotNull(result);
+        assertTrue(result.getContent().size() > 0);
+        assertEquals(customerEntity, result.getContent().get(0));
+
+        verify(customerRepository, times(1)).findAll(any(Specification.class), eq(pageable));
+    }
+
+    @Test
+    void findByActivatePageFalseTest() {
+        boolean activate = false;
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(customerRepository.findAll(any(Specification.class), eq(pageable)))
+                .thenReturn(new PageImpl<>(Collections.emptyList(), pageable, 0));
+
+        Page<CustomerEntity> result = customerService.findByActivatePage(pageable, activate);
+
+        assertNotNull(result);
+        assertTrue(result.getContent().isEmpty());
+
+        verify(customerRepository, times(1)).findAll(any(Specification.class), eq(pageable));
+    }
+
+    @Test
+    void findByActivatePageWithDifferentPageableTest() {
+        boolean activate = true;
+        Pageable pageable = PageRequest.of(1, 5);
+
+        when(customerRepository.findAll(any(Specification.class), eq(pageable)))
+                .thenReturn(new PageImpl<>(Collections.singletonList(customerEntity), pageable, 1));
+
+        Page<CustomerEntity> result = customerService.findByActivatePage(pageable, activate);
+
+        assertNotNull(result);
+        assertTrue(result.getContent().size() > 0);
+        assertEquals(customerEntity, result.getContent().get(0));
+
+        verify(customerRepository, times(1)).findAll(any(Specification.class), eq(pageable));
+    }
+
+// ... (código existente)
+
 }

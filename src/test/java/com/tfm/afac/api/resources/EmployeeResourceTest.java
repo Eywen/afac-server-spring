@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -178,8 +179,72 @@ class EmployeeResourceTest {
         verify(employeeService, times(2)).readAllPageable(any(PageRequest.class));
 
     }
+    @Test
+    void findByActivateTest() {
+        String activated = "true";
+        List<EmployeeDto> employeeList = Collections.singletonList(employeeDto);
 
+        when(employeeService.findByActivate(anyBoolean())).thenReturn(employeeList);
 
+        ResponseEntity<List<EmployeeDto>> responseEntity = employeeResource.findByActivate(activated);
 
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(employeeList, responseEntity.getBody());
+        verify(employeeService, times(1)).findByActivate(true);
+    }
 
+    @Test
+    void findAllActivateBadRequestTest() {
+        int page = 0;
+        int size = 10;
+        String order = "order";
+        boolean asc = true;
+
+        when(employeeService.readAllActive(any(PageRequest.class), anyBoolean()))
+                .thenThrow(RuntimeException.class);
+
+        ResponseEntity<Page<EmployeeEntity>> responseEntity = employeeResource.findAllActive(page, size, order, asc);
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+        verify(employeeService, times(1)).readAllActive(any(PageRequest.class), anyBoolean());
+    }
+
+    @Test
+    void findAllEmployeesBadRequestTest() {
+        int page = 0;
+        int size = 10;
+        String order = "order";
+        boolean asc = true;
+
+        when(employeeService.readAllPageable(any(PageRequest.class)))
+                .thenThrow(RuntimeException.class);
+
+        ResponseEntity<Page<EmployeeEntity>> responseEntity = employeeResource.findAllEmployees(page, size, order, asc);
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+        verify(employeeService, times(1)).readAllPageable(any(PageRequest.class));
+    }
+
+    @Test
+    void findAllEmployeesDefaultTest() {
+        int page = 0;
+        int size = 10;
+        String order = "order";
+        boolean asc = true;
+
+        Page<EmployeeEntity> mockEmployeePage = new PageImpl<>(Collections.emptyList());
+        when(employeeService.readAllPageable(any(PageRequest.class))).thenReturn(mockEmployeePage);
+
+        ResponseEntity<Page<EmployeeEntity>> responseEntity = employeeResource.findAllEmployees(page, size, order, asc);
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(mockEmployeePage, responseEntity.getBody());
+        verify(employeeService, times(1)).readAllPageable(any(PageRequest.class));
+    }
 }

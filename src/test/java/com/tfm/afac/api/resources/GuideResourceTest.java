@@ -14,9 +14,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -142,4 +142,62 @@ class GuideResourceTest {
 
         verify(guideService, times(1)).update(any(GuideDto.class));
     }
+
+    @Test
+    void testDisable() {
+        long guideId = 1;
+        GuideDto guideDto = guideDtoList.get(0);
+
+        when(guideService.findByIdGuide(guideId)).thenReturn(guideDto);
+        when(guideService.update(any(GuideDto.class))).thenReturn(guideDto);
+
+        ResponseEntity<GuideDto> responseEntity = guideResource.disable(guideId);
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertFalse(responseEntity.getBody().isActivate());
+
+        verify(guideService, times(1)).findByIdGuide(anyLong());
+        verify(guideService, times(1)).update(any(GuideDto.class));
+    }
+
+    @Test
+    void testSearchOption() {
+        String searchOption = "DELIVERY_DATE";
+        String searchValue = "DeliveryDate";
+        List<GuideDto> guideDtoList = new ArrayList<>();
+        guideDtoList.add(guideDto);
+
+        when(guideService.findBySearchOption(any(), any())).thenReturn(guideDtoList);
+
+        ResponseEntity<List<GuideDto>> responseEntity = guideResource.searhOption(searchOption, searchValue);
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(guideDtoList, responseEntity.getBody());
+
+        verify(guideService, times(1)).findBySearchOption(any(), any());
+    }
+
+    @Test
+    void testGetStatus() {
+        ResponseEntity<List<String>> responseEntity = guideResource.getStatus();
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+
+        //verify(guideService, never()).isEmpty(); // No interaction with guideService
+    }
+
+    @Test
+    void testGetSearchOption() {
+        ResponseEntity<List<Map<String, String>>> responseEntity = guideResource.getSearchOption();
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+
+    }
+
 }

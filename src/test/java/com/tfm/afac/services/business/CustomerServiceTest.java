@@ -123,10 +123,6 @@ class CustomerServiceTest {
         when(customerRepository.findAll(any(Pageable.class))).thenReturn(page);
         assertTrue( this.customerService.readAllPageable(pageable).isEmpty());
     }
-
-    /////////////////////////////
-    // ... (código existente)
-
     @Test
     void findByActivateTrueTest() {
         boolean activate = true;
@@ -203,7 +199,4 @@ class CustomerServiceTest {
 
         verify(customerRepository, times(1)).findAll(any(Specification.class), eq(pageable));
     }
-
-// ... (código existente)
-
 }

@@ -19,9 +19,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -181,5 +181,58 @@ class CustomerResourceTest {
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         verify(customerService, times(2)).findByActivatePage(any(PageRequest.class),anyBoolean());
+    }
+
+    ///////////
+    // ... (código existente)
+
+    @Test
+    void findByActivateBadRequestTest() {
+        String activated = "true";
+        when(customerService.findByActivate(anyBoolean()))
+                .thenThrow(RuntimeException.class);
+
+        ResponseEntity<List<CustomerDto>> responseEntity = customerResource.findByActivate(activated);
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+        verify(customerService, times(1)).findByActivate(true);
+    }
+
+    @Test
+    void findAllActivePageBadRequestTest() {
+        int page = 0;
+        int size = 10;
+        String order = "order";
+        boolean asc = true;
+
+        when(customerService.findByActivatePage(any(PageRequest.class), anyBoolean()))
+                .thenThrow(RuntimeException.class);
+
+        ResponseEntity<Page<CustomerEntity>> responseEntity = customerResource.findAllActivePage(page, size, order, asc);
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+        verify(customerService, times(1)).findByActivatePage(any(PageRequest.class), anyBoolean());
+    }
+
+    @Test
+    void findAllActivePageDefaultTest() {
+        int page = 0;
+        int size = 10;
+        String order = "order";
+        boolean asc = true;
+
+        Page<CustomerEntity> mockCustomerPage = new PageImpl<>(Collections.emptyList());
+        when(customerService.findByActivatePage(any(PageRequest.class), anyBoolean())).thenReturn(mockCustomerPage);
+
+        ResponseEntity<Page<CustomerEntity>> responseEntity = customerResource.findAllActivePage(page, size, order, asc);
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(mockCustomerPage, responseEntity.getBody());
+        verify(customerService, times(1)).findByActivatePage(any(PageRequest.class), anyBoolean());
     }
 }

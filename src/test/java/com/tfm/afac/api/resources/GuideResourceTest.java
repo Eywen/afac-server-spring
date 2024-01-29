@@ -6,6 +6,7 @@ import com.tfm.afac.services.exceptions.ForbiddenException;
 import com.tfm.afac.services.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -186,8 +187,6 @@ class GuideResourceTest {
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
-
-        //verify(guideService, never()).isEmpty(); // No interaction with guideService
     }
 
     @Test
@@ -199,5 +198,50 @@ class GuideResourceTest {
         assertNotNull(responseEntity.getBody());
 
     }
+///
+    // ... (código existente)
 
+    @Test
+    void testFindByEmployeeIdNotFoundException() {
+        when(guideService.findByEmployeeId(anyInt())).thenThrow(NotFoundException.class);
+
+        ResponseEntity<List<GuideDto>> response = guideResource.findByEmployeeId(1);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    void testFindByCustomerIdNotFoundException() {
+        when(guideService.findByCustomerId(anyInt())).thenThrow(NotFoundException.class);
+
+        ResponseEntity<List<GuideDto>> response = guideResource.findByCustomerId(1);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    void testDisableNotFoundException() {
+        long guideId = 1;
+        when(guideService.findByIdGuide(guideId)).thenReturn(null);
+
+        ResponseEntity<GuideDto> responseEntity = guideResource.disable(guideId);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+    }
+
+    @Test
+    void testSearchOptionNotFoundException() {
+        String searchOption = "DELIVERY_DATE";
+        String searchValue = "DeliveryDate";
+
+        when(guideService.findBySearchOption(any(), any())).thenReturn( new ArrayList<>());
+
+        ResponseEntity<List<GuideDto>> responseEntity = guideResource.searhOption(searchOption, searchValue);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+    }
 }

@@ -16,10 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -121,6 +118,15 @@ class CustomerResourceTest {
     }
 
     @Test
+    void disableNotFoundTest(){
+        Integer customerId = 1;
+        when(customerService.findById(anyInt())).thenReturn(null);
+        ResponseEntity<CustomerDto> responseEntity = customerResource.disable(customerId);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
+
+    @Test
     void findByIdTest(){
         Integer customerId = 1;
         when(customerService.findById(anyInt())).thenReturn(customerDto);
@@ -132,6 +138,14 @@ class CustomerResourceTest {
         assertEquals(customerDto, responseEntity.getBody());
 
         verify(customerService, times(1)).findById(anyInt());
+    }
+    @Test
+    void findByIdNotFoundTest(){
+        Integer customerId = 1;
+        when(customerService.findById(anyInt())).thenThrow(NotFoundException.class);
+
+        ResponseEntity<CustomerDto> responseEntity = customerResource.findById(customerId);
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
     @Test
@@ -195,6 +209,20 @@ class CustomerResourceTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         verify(customerService, times(1)).findByActivate(true);
     }
+    @Test
+    void findByActivateTest() {
+        String activated = "true";
+        List<CustomerDto> customerDtoList = new ArrayList<>();
+        customerDtoList.add(customerDto);
+        when(customerService.findByActivate(anyBoolean()))
+                .thenReturn(customerDtoList);
+
+        ResponseEntity<List<CustomerDto>> responseEntity = customerResource.findByActivate(activated);
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(customerService, times(1)).findByActivate(true);
+    }
 
     @Test
     void findAllActivePageBadRequestTest() {
@@ -230,5 +258,20 @@ class CustomerResourceTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(mockCustomerPage, responseEntity.getBody());
         verify(customerService, times(1)).findByActivatePage(any(PageRequest.class), anyBoolean());
+    }
+
+    @Test
+    void findAllTest() {
+
+        List<CustomerDto> customerList = new ArrayList<>();
+        customerList.add(customerDto);
+        when(customerService.readAll()).thenReturn(customerList);
+
+        ResponseEntity<List<CustomerDto>> responseEntity = customerResource.findAll();
+
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(customerList, responseEntity.getBody());
+        verify(customerService, times(1)).readAll();
     }
 }

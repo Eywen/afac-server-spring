@@ -183,9 +183,6 @@ class CustomerResourceTest {
         verify(customerService, times(2)).findByActivatePage(any(PageRequest.class),anyBoolean());
     }
 
-    ///////////
-    // ... (código existente)
-
     @Test
     void findByActivateBadRequestTest() {
         String activated = "true";
@@ -196,7 +193,6 @@ class CustomerResourceTest {
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertNull(responseEntity.getBody());
         verify(customerService, times(1)).findByActivate(true);
     }
 

@@ -128,7 +128,7 @@ class EmployeeServiceTest {
 
     @Test
     void testReadAllActiveWithActivateTrue() {
-        // Datos de prueba
+
         boolean activate = true;
         Pageable pageable = PageRequest.of(0, 10);
         EmployeeEntity employeeEntity = new EmployeeEntity(); // Ajusta esto según tu entidad
@@ -137,15 +137,12 @@ class EmployeeServiceTest {
         when(employeeRepository.findAll(any(Specification.class), eq(pageable)))
                 .thenReturn(new PageImpl<>(Collections.singletonList(employeeEntity), pageable, 1));
 
-        // Llamada al método a probar
         Page<EmployeeEntity> result = employeeService.readAllActive(pageable, activate);
 
-        // Verificaciones
         assertNotNull(result);
         assertTrue(result.getContent().size() > 0);
         assertEquals(employeeEntity, result.getContent().get(0));
 
-        // Verificación de llamadas al repositorio
         verify(employeeRepository, times(1)).findAll(any(Specification.class), eq(pageable));
     }
 
@@ -183,4 +180,85 @@ class EmployeeServiceTest {
         verify(employeeRepository, times(1)).findAll(any(Specification.class), eq(pageable));
     }
 
+    ///////////////
+
+    // ... (código existente)
+
+    @Test
+    void findByActivateTrueTest() {
+        boolean activate = true;
+        when(employeeRepository.findByactivate(activate)).thenReturn(Collections.singletonList(employee));
+
+        List<EmployeeDto> result = employeeService.findByActivate(activate);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(employeeDto.getId(), result.get(0).getId());
+
+        verify(employeeRepository, times(1)).findByactivate(activate);
     }
+
+    @Test
+    void findByActivateFalseTest() {
+        boolean activate = false;
+        when(employeeRepository.findByactivate(activate)).thenReturn(Collections.emptyList());
+
+        List<EmployeeDto> result = employeeService.findByActivate(activate);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+
+        verify(employeeRepository, times(1)).findByactivate(activate);
+    }
+
+    @Test
+    void readAllActiveWithActivateTrueTest() {
+        boolean activate = true;
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(employeeRepository.findAll(any(Specification.class), eq(pageable)))
+                .thenReturn(new PageImpl<>(Collections.singletonList(employee), pageable, 1));
+
+        Page<EmployeeEntity> result = employeeService.readAllActive(pageable, activate);
+
+        assertNotNull(result);
+        assertTrue(result.getContent().size() > 0);
+        assertEquals(employee, result.getContent().get(0));
+
+        verify(employeeRepository, times(1)).findAll(any(Specification.class), eq(pageable));
+    }
+
+    @Test
+    void readAllActiveWithActivateFalseTest() {
+        boolean activate = false;
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(employeeRepository.findAll(any(Specification.class), eq(pageable)))
+                .thenReturn(new PageImpl<>(Collections.emptyList(), pageable, 0));
+
+        Page<EmployeeEntity> result = employeeService.readAllActive(pageable, activate);
+
+        assertNotNull(result);
+        assertTrue(result.getContent().isEmpty());
+
+        verify(employeeRepository, times(1)).findAll(any(Specification.class), eq(pageable));
+    }
+
+    @Test
+    void readAllActiveWithDifferentPageableTest() {
+        boolean activate = true;
+        Pageable pageable = PageRequest.of(1, 5);
+
+        when(employeeRepository.findAll(any(Specification.class), eq(pageable)))
+                .thenReturn(new PageImpl<>(Collections.singletonList(employee), pageable, 1));
+
+        Page<EmployeeEntity> result = employeeService.readAllActive(pageable, activate);
+
+        assertNotNull(result);
+        assertTrue(result.getContent().size() > 0);
+        assertEquals(employee, result.getContent().get(0));
+
+        verify(employeeRepository, times(1)).findAll(any(Specification.class), eq(pageable));
+    }
+
+}

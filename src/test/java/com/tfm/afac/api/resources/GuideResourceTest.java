@@ -198,8 +198,6 @@ class GuideResourceTest {
         assertNotNull(responseEntity.getBody());
 
     }
-///
-    // ... (código existente)
 
     @Test
     void testFindByEmployeeIdNotFoundException() {
